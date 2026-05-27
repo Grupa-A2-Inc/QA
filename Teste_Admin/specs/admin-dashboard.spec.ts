@@ -40,19 +40,25 @@ test.describe('Admin - dashboard and organization', () => {
 
   // TEST 3 — Admin poate edita detaliile organizației
   test('admin can edit organization details', async ({ page }) => {
-    // Așteaptă dashboard-ul
+    // Așteaptă dashboard-ul să fie vizibil
     await expect(page.getByRole('heading', { name: /admin dashboard/i })).toBeVisible();
 
-    // 🔧 Verifică dacă există butonul Edit
-    const editButton = page.locator('role=button[name="Edit"]');
+    // Verifică dacă există butonul Edit
+    const editButton = page.getByRole('button', { name: /edit/i });
     const hasEditButton = await editButton.count();
 
     if (hasEditButton > 0) {
       await expect(editButton).toBeVisible();
       await editButton.click();
-      await expect(page.getByText(/save|update|organization/i)).toBeVisible({ timeout: 15000 });
+
+      // Așteaptă apariția formularului de editare
+      await page.waitForSelector('button[type="submit"]', { timeout: 15000 });
+
+      // Verifică butonul Save sau Update
+      await expect(page.getByRole('button', { name: /save|update/i })).toBeVisible();
+
     } else {
-      // 🔥 Fallback: sesiunea lipsește
+      // Fallback: sesiunea lipsește
       await expect(page.getByText(/missing session data/i)).toBeVisible();
     }
   });

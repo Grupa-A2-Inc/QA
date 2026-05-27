@@ -15,20 +15,11 @@ test.describe('Authentication', () => {
   // TEST 1 — Login valid pentru Admin
   // --------------------------------------------------
   test('Admin can log in successfully', async ({ page }) => {
-
-    // Folosim helper-ul care:
-    // - curăță sesiunea
-    // - navighează la /login
-    // - completează email + parolă
-    // - trimite formularul
-    // - așteaptă redirect-ul corect
     await loginAsAdmin(page);
 
-    // Verificăm că dashboard-ul Adminului s-a încărcat corect
-    // (heading-ul este stabil și nu depinde de URL exact)
-    await expect(
-      page.getByRole('heading', { name: /welcome to the dashboard, admin/i })
-    ).toBeVisible();
+    // Verifică dashboard-ul real
+    await expect(page.getByRole('heading', { name: /admin dashboard/i })).toBeVisible();
+    await expect(page.getByText(/overview of your organization/i)).toBeVisible();
   });
 
   // --------------------------------------------------

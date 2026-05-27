@@ -1,7 +1,7 @@
 export const testUsers = {
   admin: {
-    email: "admin.doe@mail.com",
-    password: "admindoe123"
+    email: "roxanaioanab12@gmail.com",
+    password: "admin123"
   },
   teacher: {
     email: "roxana.basarab7@gmail.com",
