@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, Page, Locator } from '@playwright/test';
 import { loginAsAdmin } from '../helpers/auth';
 import { testUsers } from '../fixtures/users';
 
@@ -6,11 +6,11 @@ const baseURL = process.env.E2E_BASE_URL ?? 'https://frontend-teal-five-57.verce
 
 test.use({ baseURL });
 
-function getSectionByHeading(page, name) {
+function getSectionByHeading(page: Page, name: string): Locator {
 	return page.getByRole('heading', { name }).locator('..');
 }
 
-function getInputByLabel(section, labelText) {
+function getInputByLabel(section: Locator, labelText: string): Locator {
 	const safeText = labelText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 	const labelMatcher = new RegExp(`^${safeText}$`);
 	// Exact match avoids collisions like "New Password" vs "Confirm New Password".

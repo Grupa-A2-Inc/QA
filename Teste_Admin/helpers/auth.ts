@@ -52,3 +52,19 @@ export async function loginAsAdmin(page: Page) {
     page.getByText(/admin dashboard/i)
   ).toBeVisible({ timeout: 15_000 });
 }
+
+export async function loginAsStudent(page: Page) {
+  await clearSession(page);
+
+  await page.goto('/login');
+
+  await page.fill('input[type="email"]', testUsers.student.email);
+  await page.fill('input[type="password"]', testUsers.student.password);
+
+  await page.getByRole('button', { name: /^log in$/i }).click();
+
+  await page.waitForURL('**/dashboard**', { timeout: 60_000 });
+
+  await expect(page.getByText(/my courses|student dashboard/i))
+    .toBeVisible({ timeout: 15_000 });
+}

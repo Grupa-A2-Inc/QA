@@ -1,5 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
-import { seedStudentSession } from '../../helpers/auth';
+import { loginAsStudent } from '../Teste_Admin/helpers/auth'; 
 
 test.describe('Student Dashboard', () => {
   let page: Page;
@@ -7,7 +7,7 @@ test.describe('Student Dashboard', () => {
   test.beforeEach(async ({ page: testPage }) => {
     page = testPage;
     // Seed student session for authenticated tests
-    await seedStudentSession(page);
+    await loginAsStudent(page);
   });
 
   test.describe('Dashboard Layout', () => {

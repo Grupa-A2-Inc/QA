@@ -1,12 +1,12 @@
 import { test, expect, Page } from '@playwright/test';
-import { seedStudentSession } from '../../helpers/auth';
+import { loginAsStudent } from '../Teste_Admin/helpers/auth'; 
 
 test.describe('Student Complete User Flows', () => {
   let page: Page;
 
   test.beforeEach(async ({ page: testPage }) => {
     page = testPage;
-    await seedStudentSession(page);
+    await loginAsStudent(page);
   });
 
   test.describe('End-to-End: Course Enrollment to Completion', () => {

@@ -1,5 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
-import { seedStudentSession } from '../../helpers/auth';
+import { loginAsStudent } from '../Teste_Admin/helpers/auth';
 
 test.describe('Student Adaptive Learning', () => {
   let page: Page;
@@ -24,7 +24,7 @@ test.describe('Student Adaptive Learning', () => {
 
   test.beforeEach(async ({ page: testPage }) => {
     page = testPage;
-    await seedStudentSession(page);
+    await loginAsStudent(page);
   });
 
   test.describe('Adaptive Learning Homepage', () => {
