@@ -17,14 +17,17 @@ const testUsers = {
 
 async function loginAsTeacher(page) {
   // If the browser context already has an auth session (via storageState), reuse it.
-  // Navigate to dashboard; if redirected to /login, the session is missing — fall back to full login.
+  // Navigate to dashboard; check both the URL and that "My Courses" heading is visible.
+  // The app sometimes accepts stale cookies without redirecting to /login, so we verify the heading too.
   await page.goto('/dashboard/teacher/', { waitUntil: 'load', timeout: 30_000 }).catch(() => {});
   if (!page.url().includes('/login')) {
-    await expect(page.getByRole('heading', { name: /my courses/i })).toBeVisible({ timeout: 15_000 });
-    return;
+    const headingVisible = await page.getByRole('heading', { name: /my courses/i })
+      .isVisible({ timeout: 8_000 }).catch(() => false);
+    if (headingVisible) return;
+    // Session cookie accepted by client but server-side session may be invalid — fall through to full login.
   }
 
-  // Session missing or cleared — do a full login.
+  // Session missing, expired, or server-invalidated — do a full login.
   await page.goto('/login', { waitUntil: 'load' });
   await page.getByRole('textbox', { name: 'e.g. student@school.com' }).fill(testUsers.teacher.email);
   await page.getByRole('textbox', { name: 'Enter your password' }).fill(testUsers.teacher.password);

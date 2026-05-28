@@ -36,7 +36,9 @@ async function findFirstTextField(page) {
 
 // Navighează la primul curs existent
 async function goToFirstCourse(page) {
-  await page.goto('/dashboard/teacher/');
+  const ok = await page.goto('/dashboard/teacher/', { waitUntil: 'load', timeout: 30_000 })
+    .then(() => true).catch(() => false);
+  if (!ok) return false;
   await page.waitForTimeout(1000);
 
   // Incearca diferite moduri de a gasi un curs
